@@ -904,6 +904,8 @@ pnpm dev:vercel       # Simulate Vercel environment locally
 - **Cold Starts**: ~100-500ms for Node.js functions
 - **Rate Limits**: Based on Vercel plan limits
 
+⚠️ **Important**: Vercel's **Hobby plan** has a limit of **12 serverless functions per deployment**. If you encounter deployment errors about exceeding the function limit, you may need to upgrade to Vercel's Pro plan.
+
 ## 🔧 Environment Variables
 
 | Variable | Description | Required | Example |
