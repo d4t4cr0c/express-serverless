@@ -1,5 +1,309 @@
 # Express Serverless App with Supabase Auth & Preact Frontend
 
+> [🇦🇷 Versión en Español](#-versión-en-español) | [🇺🇸 English Version](#express-serverless-app-with-supabase-auth--preact-frontend)
+
+---
+
+## 🇦🇷 Versión en Español
+
+# Aplicación Express Serverless con Autenticación Supabase y Frontend Preact
+
+Una aplicación Express moderna y segura en TypeScript desplegada como funciones serverless de Vercel con autenticación Supabase, base de datos PostgreSQL y un frontend reactivo Preact usando módulos ES.
+
+## 📚 Tabla de Contenidos
+
+1. [Características](#-características)
+2. [Stack Tecnológico](#-stack-tecnológico)
+3. [Resumen de Arquitectura](#-resumen-de-arquitectura)
+4. [Estructura del Proyecto](#-estructura-del-proyecto)
+5. [Especificaciones del Frontend](#-especificaciones-del-frontend)
+6. [Características de Seguridad](#-características-de-seguridad)
+7. [Instrucciones de Configuración](#-instrucciones-de-configuración)
+8. [Configuración de Autenticación](#-configuración-de-autenticación)
+9. [Endpoints de la API](#-endpoints-de-la-api)
+10. [Uso del Frontend](#-uso-del-frontend)
+11. [Flujo de Desarrollo](#-flujo-de-desarrollo)
+12. [Deployment](#-deployment)
+13. [Variables de Entorno](#-variables-de-entorno)
+14. [Solución de Problemas](#-solución-de-problemas)
+15. [Documentación](#-documentación)
+
+## ✨ Características
+
+### Aplicación Principal
+- 🚀 **Express.js** con TypeScript para un backend robusto
+- 📊 **Supabase** base de datos PostgreSQL con Row Level Security (RLS)
+- ⚡ **Vercel** funciones serverless para escalado automático
+- 🔐 **GitHub OAuth** autenticación a través de Supabase Auth
+- 👥 **Control de acceso basado en roles** (permisos Admin/Usuario)
+- 🔍 **Búsqueda avanzada de productos** con filtrado en tiempo real
+- ➕ **Gestión de productos para admin** (Crear, Leer, Actualizar, Eliminar)
+- 📱 **Diseño responsivo** para escritorio y móvil
+
+### Frontend Moderno
+- ⚛️ **Preact 10.23.1** con hooks para UI reactiva
+- 🏷️ **HTM (Hyperscript Tagged Markup)** para sintaxis tipo JSX sin build step
+- 📦 **Arquitectura de módulos ES** con separación limpia de responsabilidades
+- 🎨 **CSS moderno** con layouts de grid responsive
+- 🔄 **Gestión de estado en tiempo real** con actualizaciones automáticas de UI
+- 🛡️ **Patrón singleton** para gestión del cliente Supabase
+
+### Seguridad y Rendimiento
+- 🔒 **Stack de middleware de seguridad** integral
+- 🚦 **Limitación de velocidad de peticiones** y controles de tamaño de payload
+- 🛡️ **Prevención de XSS e inyección SQL**
+- 📋 **Implementación de Content Security Policy**
+- 🎯 **Monitoreo de rendimiento** y seguimiento de errores
+
+## 🛠 Stack Tecnológico
+
+### Backend
+- **Runtime**: Node.js con TypeScript
+- **Framework**: Express.js 5.x
+- **Base de Datos**: Supabase (PostgreSQL con RLS)
+- **Autenticación**: Supabase Auth (GitHub OAuth)
+- **Deployment**: Funciones Serverless de Vercel
+- **Seguridad**: Stack de middleware personalizado con CORS, CSP, rate limiting
+
+### Frontend
+- **Framework**: Preact 10.23.1 (alternativa a React de 3KB)
+- **Motor de Templates**: HTM (Hyperscript Tagged Markup)
+- **Sistema de Módulos**: Módulos ES6 nativos (sin proceso de build)
+- **Estilos**: CSS moderno con Grid y Flexbox
+- **Gestión de Estado**: hooks de Preact con servicios personalizados
+- **Cliente HTTP**: Fetch API para comunicación con backend
+
+### Herramientas de Desarrollo
+- **Gestor de Paquetes**: pnpm
+- **Verificación de Tipos**: TypeScript con modo estricto
+- **Servidor de Desarrollo**: tsx para desarrollo local
+- **Entorno**: dotenv para gestión de configuración
+
+## 🏗 Resumen de Arquitectura
+
+### Arquitectura Serverless
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Vercel CDN    │    │  Funciones      │    │   Supabase      │
+│   (Frontend)    │────│  Serverless     │────│   Base de       │
+│   Archivos      │    │  (Rutas API)    │    │   Datos + Auth  │
+│   Estáticos     │    │                 │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         │              ┌─────────────────┐              │
+         └──────────────│   GitHub OAuth  │──────────────┘
+                        │   Integración   │
+                        └─────────────────┘
+```
+
+### Arquitectura del Frontend
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Capa de Aplicación                       │
+├─────────────────────────────────────────────────────────────┤
+│  Components/     │  Hooks/         │  Services/             │
+│  - App.js        │  - useAuth.js   │  - supabase.js         │
+│  - LoginPage.js  │  - useAPI.js    │    (Singleton)         │
+│  - Header.js     │  - useProducts.js                        │
+│  - ProductTable.js                                         │
+│  - ProductForm.js                                          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## 📁 Estructura del Proyecto
+
+```
+express-serverless/
+├── api/                          # Funciones serverless backend
+│   ├── index.ts                  # Punto de entrada principal
+│   ├── controllers/              # Lógica de negocio
+│   │   ├── health.controller.ts  # Verificación de salud del sistema
+│   │   └── product.controller.ts # Operaciones CRUD de productos
+│   ├── middleware/               # Middleware de Express
+│   │   ├── auth.middleware.ts    # Verificación JWT y control de roles
+│   │   ├── error.middleware.ts   # Manejo global de errores
+│   │   ├── security.middleware.ts# Configuración CORS y rate limiting
+│   │   └── security-headers.middleware.ts # Headers de seguridad
+│   ├── routes/                   # Definiciones de rutas
+│   │   ├── index.ts              # Enrutador principal
+│   │   ├── health.routes.ts      # Rutas de salud del sistema
+│   │   └── products.routes.ts    # Rutas de gestión de productos
+│   ├── services/                 # Integraciones de servicios externos
+│   │   └── supabase.service.ts   # Operaciones y cliente Supabase
+│   ├── types/                    # Definiciones TypeScript
+│   │   └── index.ts              # Definiciones de tipos compartidos
+│   ├── utils/                    # Funciones utilitarias
+│   │   └── validation.utils.ts   # Helpers de validación de entrada
+│   └── data/
+│       └── products.json         # Datos de muestra para desarrollo
+├── public/                       # Archivos estáticos del frontend
+│   ├── index.html                # Punto de entrada (HTML mínimo)
+│   ├── css/
+│   │   └── styles.css            # Estilos de la aplicación
+│   └── js/                       # Módulos JavaScript
+│       ├── components/           # Componentes UI
+│       │   ├── App.js            # Componente principal de la aplicación
+│       │   ├── LoginPage.js      # Página de autenticación
+│       │   ├── Header.js         # Componente de encabezado
+│       │   ├── ProductTable.js   # Tabla de productos
+│       │   └── ProductForm.js    # Formulario de productos (admin)
+│       ├── hooks/                # hooks personalizados de Preact
+│       │   ├── useAuth.js        # Hook de gestión de autenticación
+│       │   ├── useAPI.js         # Hook de comunicación con API
+│       │   └── useProducts.js    # Hook de gestión de estado de productos
+│       └── services/             # Servicios del frontend
+│           └── supabase.js       # Cliente Supabase (singleton)
+├── docs/                         # Documentación
+│   ├── serverless-vs-vps-deployment.md
+│   └── gotrueclient-singleton-solution.md
+├── dev-server.ts                 # Servidor de desarrollo local
+├── package.json                  # Dependencias y scripts
+├── tsconfig.json                 # Configuración TypeScript
+├── vercel.json                   # Configuración deployment serverless (300s timeout)
+└── README.md                     # Documentación del proyecto
+```
+
+## 🎨 Especificaciones del Frontend
+
+### Arquitectura Sin Build
+La aplicación utiliza **módulos ES nativos** directamente en el navegador, eliminando la necesidad de herramientas de build complejas mientras mantiene una experiencia de desarrollo moderna.
+
+```html
+<!-- Configuración del index.html -->
+<script type="importmap">
+{
+  "imports": {
+    "preact": "https://esm.sh/preact@10.23.1",
+    "preact/hooks": "https://esm.sh/preact@10.23.1/hooks",
+    "htm": "https://esm.sh/htm@3.1.1"
+  }
+}
+</script>
+<script type="module" src="/js/components/App.js"></script>
+```
+
+### Componentes con HTM
+Los componentes utilizan **HTM (Hyperscript Tagged Markup)** para sintaxis tipo JSX sin compilación:
+
+```javascript
+// Ejemplo de componente con HTM
+import { html } from 'htm/preact';
+import { useState } from 'preact/hooks';
+
+export function ProductForm({ onSubmit }) {
+    const [title, setTitle] = useState('');
+    
+    return html`
+        <form onSubmit=${handleSubmit}>
+            <input 
+                value=${title}
+                onInput=${(e) => setTitle(e.target.value)}
+                placeholder="Título del producto"
+            />
+            <button type="submit">Crear Producto</button>
+        </form>
+    `;
+}
+```
+
+### Gestión de Estado Reactivo
+Implementa hooks personalizados para gestión de estado sin bibliotecas externas:
+
+```javascript
+// Hook de productos con estado reactivo
+export function useProducts() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    
+    const fetchProducts = async (searchTerm = '') => {
+        setLoading(true);
+        try {
+            const response = await api.get(`/api/products?search=${searchTerm}`);
+            setProducts(response.data || []);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    return { products, loading, fetchProducts };
+}
+```
+
+### Servicios Singleton
+Utiliza el patrón singleton para gestión eficiente de recursos:
+
+```javascript
+// Servicio Supabase singleton
+class SupabaseService {
+    constructor() {
+        if (SupabaseService.instance) {
+            return SupabaseService.instance;
+        }
+        this.client = supabase.createClient(url, key);
+        SupabaseService.instance = this;
+    }
+}
+
+export const supabaseService = new SupabaseService();
+```
+
+## 🔐 Características de Seguridad
+
+### Autenticación y Autorización
+- **GitHub OAuth**: Autenticación social segura a través de Supabase
+- **JWT Tokens**: Verificación de tokens basada en sesión
+- **Control de Roles**: Sistema admin/usuario con permisos granulares
+- **Row Level Security**: Políticas de seguridad a nivel de base de datos
+
+```typescript
+// Ejemplo de middleware de autenticación
+export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    
+    if (!token) {
+        return res.status(401).json({ error: 'Token de acceso requerido' });
+    }
+    
+    const { user, error } = await supabaseService.verifyToken(token);
+    if (error || !user) {
+        return res.status(401).json({ error: 'Token inválido' });
+    }
+    
+    req.user = user;
+    next();
+};
+```
+
+### Protección Contra Vulnerabilidades
+- **Sanitización de Entrada**: Prevención de inyección SQL y XSS
+- **CORS Configurado**: Orígenes permitidos configurables
+- **Rate Limiting**: Protección contra ataques de fuerza bruta
+- **Content Security Policy**: Prevención de ataques de script
+
+```typescript
+// Funciones de seguridad
+function sanitizeSearchTerm(term: string): string | null {
+    const cleaned = term
+        .replace(/[;'"\\]/g, '')  // Remover caracteres peligrosos
+        .replace(/--/g, '')       // Remover patrones de comentarios SQL
+        .trim();
+    
+    // Rechazar si contiene palabras clave SQL
+    const sqlKeywords = /\b(SELECT|INSERT|UPDATE|DELETE|DROP)\b/i;
+    if (sqlKeywords.test(cleaned)) {
+        return null;
+    }
+    
+    return cleaned.length > 0 ? cleaned : null;
+}
+```
+
+---
+
+## 🇺🇸 English Version
+
+# Express Serverless App with Supabase Auth & Preact Frontend
+
 A modern, secure TypeScript Express application deployed as Vercel serverless functions with Supabase authentication, PostgreSQL database, and a reactive Preact frontend using ES modules.
 
 ## 📚 Table of Contents
