@@ -1,0 +1,21 @@
+# Exclude subdirectories from being treated as separate serverless functions
+api/controllers/**
+api/middleware/**
+api/routes/**
+api/services/**
+api/types/**
+api/utils/**
+api/data/**
+
+# Development and config files
+.env*
+*.log
+node_modules/
+.git/
+README.md
+docs/
+dev-server.ts
+tsconfig.json
+prompts.md
+quick-test.js
+env-test.js
