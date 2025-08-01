@@ -1,0 +1,30 @@
+{
+  "products": [
+    {
+      "category_id": "MLA412445",
+      "product-category": "book",
+      "title": "Uncommon Places: The Complete Works - Stephen Shore",
+      "subtitle": "Uncommon Places: The Complete Works",
+      "author": "Stephen Shore",
+      "description": "¡Obra maestra de la fotografía contemporánea!\n\nUncommon Places: The Complete Works - Stephen Shore\nEdición de colección publicada por Aperture (2004)\n\nUna oportunidad única para los amantes de la fotografía artística y coleccionistas. Esta obra fundamental reúne el trabajo más influyente de Stephen Shore, uno de los maestros indiscutidos de la fotografía a color.\n\nCaracterísticas destacadas:\n• Edición completa de la legendaria serie \"Uncommon Places\"\n• 188 páginas de fotografías magistralmente reproducidas\n• Publicado por la prestigiosa editorial Aperture\n• ISBN: 978-1-931788-34-2\n• Peso: 1.896 kg - Obra de gran formato\n\nEstado: Usado - Muy buen estado\n• Mínimos signos de desgaste en los bordes de la tapa\n• Interior impecable\n• Conserva toda su calidad editorial original\n\nEste volumen representa una pieza fundamental para cualquier biblioteca de fotografía artística, documentando la visión única de Shore sobre el paisaje estadounidense de los años 70.\n\nUna inversión en patrimonio cultural y artístico que mantiene su valor a través del tiempo. Ideal para coleccionistas, fotógrafos y amantes del arte contemporáneo.\n\n¡Conseguí esta joya de la fotografía antes que otro coleccionista la descubra!",
+      "product-code-or-isbn": "978-1-931788-34-2",
+      "price": 10200,
+      "base_price": 10200,
+      "currency_id": "ARS",
+      "available_quantity": 1
+    },
+    {
+      "category_id": "MLA412445",
+      "product-category": "book",
+      "title": "History of Photography",
+      "subtitle": "A brief history of photography",
+      "author": "John Sarkowski",
+      "description": "Historia de la fotografia.",
+      "product-code-or-isbn": "978-1-931788-12-3",
+      "price": 20000,
+      "base_price": 20000,
+      "currency_id": "ARS",
+      "available_quantity": 1
+    }
+  ]
+}
