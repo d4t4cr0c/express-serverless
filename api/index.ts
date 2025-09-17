@@ -8,7 +8,7 @@ import { errorHandler, notFoundHandler } from './middleware/error.middleware';
 import { enhancedCors } from './middleware/security.middleware';
 import { securityHeaders, apiSecurityHeaders } from './middleware/security-headers.middleware';
 
-const app: Express = express();
+const app = express();
 
 // Security headers (applied first)
 app.use(securityHeaders);
